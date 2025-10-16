@@ -1,5 +1,6 @@
 Material for the Molecular Dynamics (MD) simulations exercise in the Protein Science course.
 
+> Open the ```MD_Protein_Science.ipynb``` and read its contents before the exercise!
 
 # File structure
 
