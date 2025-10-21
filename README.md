@@ -2,31 +2,17 @@ Material for the Molecular Dynamics (MD) simulations exercise in the Protein Sci
 
 > Open the ```MD_Protein_Science.ipynb``` and read its contents before the exercise!
 
-# Installing conda environment
-
-In order to run the exercise, we need a correct Python environment that is based on Python 3, and that contains the following packages:
-
-- MDTraj
-- Numpy
-- Matplotlib
-
-First, try running the following commands in terminal:
+# Activating conda environment
 
 ```module load miniconda3```
 
-```conda activate MDsims```
+```conda activate /sw/common/miniconda3/envs/MD```
 
-If the command throws an error, we need to install the environment ourselves. The installation is handled by the file ```envs.yml```. Run the following commands:
-
-```conda env create -f envs.yml```
-
-(respond ```y``` where necessary)
-
-```conda activate MDsims```
-
-The Notebook can be opened using the following command:
+You should see ```(MD)``` pop up at the beginning of your terminal line. This means that you are now in the conda environment called ```MD```.
 
 ```jupyter-lab MD_Protein_Science.ipynb```
+
+If you want to exit the notebook for any reason, in the terminal window press ```CTRL+C```. You will be asked if you want it to shut down (answer ```y```).
 
 # File structure
 
