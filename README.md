@@ -2,7 +2,13 @@ Material for the Molecular Dynamics (MD) simulations exercise in the Protein Sci
 
 > Open the ```MD_Protein_Science.ipynb``` and read its contents before the exercise!
 
-# Activating conda environment
+# Downloading the git repository to desktop
+
+```git clone https://github.com/au-mbg/protein_science.git ~/Desktop/``` 
+
+```cd ~/Desktop/protein_science```
+
+# Activating conda environment to run Jupyter Notebook
 
 ```module load miniconda3```
 
