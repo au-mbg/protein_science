@@ -10,7 +10,9 @@ In order to run the exercise, we need a correct Python environment that is based
 - Numpy
 - Matplotlib
 
-First, try running the following in terminal:
+First, try running the following commands in terminal:
+
+```module load miniconda3```
 
 ```conda activate MDsims```
 
