@@ -1,0 +1,11 @@
+name: MDsims
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python==3.12.12
+  - mdtraj=1.11.0
+  - numpy=2.0.2
+  - matplotlib=3.10.0
+  - jupyterlab
+  - ipykernel
