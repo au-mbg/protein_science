@@ -1,3 +1,20 @@
 ---
 title: Non-linear fitting
 ---
+
+```{python}
+#| code-fold: true
+from IPython.display import display
+```
+
+In the following exercises we will work with non-linear fitting, we will be using 
+this [dataset](../data/lambda_max_titration.csv).
+
+## Loading the dataset
+
+```{python}
+#| teaching: solution
+import pandas as pd
+df = pd.read_csv('../data/lambda_max_titration.csv')
+display(df)
+```

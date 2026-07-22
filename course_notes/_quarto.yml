@@ -1,5 +1,11 @@
 project:
   type: website
+  resources:
+    - data/
+
+
+filters:
+  - strip-solution
 
 website:
   title: "Protein Science"
@@ -23,9 +29,10 @@ format:
     toc: true
     mainfont: "inter, sans-serif"
     monofont: "JetBrains Mono, monospace"
-    code-fold: show
-    code-tools: true
 
+teaching:
+  show-solutions: true
+  default-solution-title: "Solution"
 
 
 
