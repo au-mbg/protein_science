@@ -1,0 +1,16 @@
+[workspace]
+authors = ["Mads-Peter <machri@phys.au.dk>"]
+channels = ["conda-forge"]
+name = "protein_science"
+platforms = ["osx-arm64"]
+version = "0.1.0"
+
+[tasks.render]
+cmd = "quarto render"
+cwd = "course_notes"
+
+[tasks]
+
+[dependencies]
+python = "==3.12"
+quarto = ">=1.9.38,<2"
