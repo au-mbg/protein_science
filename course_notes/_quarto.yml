@@ -3,18 +3,29 @@ project:
 
 website:
   title: "Protein Science"
-  navbar:
-    left:
+
+  sidebar:
+    style: "docked"
+    contents:
       - href: index.qmd
         text: Home
+        icon: house
+      - section: "Exercises"
+        contents:
+          - content/fitting.qmd
 
 format:
   html:
     theme:
-      - cosmo
-      - brand
+      light: [flatly, styles.scss]
+      dark: [darkly, styles.scss]
     css: styles.css
     toc: true
+    mainfont: "inter, sans-serif"
+    monofont: "JetBrains Mono, monospace"
+    code-fold: show
+    code-tools: true
+
 
 
 

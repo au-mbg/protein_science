@@ -9,6 +9,10 @@ version = "0.1.0"
 cmd = "quarto render"
 cwd = "course_notes"
 
+[tasks.preview]
+cmd = "quarto preview"
+cwd = "course_notes"
+
 [tasks]
 
 [dependencies]
