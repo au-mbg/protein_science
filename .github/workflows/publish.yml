@@ -25,7 +25,7 @@ jobs:
           pixi-version: v0.72.1
           cache: true
       - run: |
-          pixi r render student
+          pixi r render exercise
           pixi r render solution
 
       - name: Upload Pages artifact
