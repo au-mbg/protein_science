@@ -30,6 +30,13 @@ format:
     mainfont: "inter, sans-serif"
     monofont: "JetBrains Mono, monospace"
 
+  ipynb: default
+
+format-links:
+  - html
+  - format: ipynb
+    text: Jupyter Notebook
+
 teaching:
   default-solution-title: "Solution"
 
