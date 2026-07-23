@@ -31,7 +31,6 @@ format:
     monofont: "JetBrains Mono, monospace"
 
 teaching:
-  show-solutions: true
   default-solution-title: "Solution"
 
 

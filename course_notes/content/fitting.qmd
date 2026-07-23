@@ -5,16 +5,265 @@ title: Non-linear fitting
 ```{python}
 #| code-fold: true
 from IPython.display import display
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy.optimize import curve_fit
 ```
 
 In the following exercises we will work with non-linear fitting, we will be using 
-this [dataset](../data/lambda_max_titration.csv).
+this [dataset](../data/lambda_max_titration.csv). The models we wish to fit are of the type 
+
+$$
+\theta(L) = f(L, ...)
+$$
+
+Where $L$ is the ligand concentration and $\theta$ is the fraction of the total binding sites that are occupied and $f$ is some function of $L$ and possibly a number of parameters that fitting will help us determine.
+
+We will do so by following a sequence of steps that can be applied to most any problem with fitting 
+
+1. Loading the dataset
+2. Inspecting the dataset
+3. If neccessary, transforming the dataset to the model
+4. Selecting a model.
+5. Fitting 
+6. Analyze the fit
 
 ## Loading the dataset
 
+Use the function `pd.read_csv` to load the dataframe into a variable called `df`. 
+
+```{python}
+#| teaching: exercise
+#| eval: false
+df = ...
+display(df)
+```
+
 ```{python}
 #| teaching: solution
-import pandas as pd
 df = pd.read_csv('../data/lambda_max_titration.csv')
 display(df)
+```
+
+Consider the following: 
+
+- What are the columns of the dataset? 
+- What are the units of each column? 
+
+## Inspecting the dataset
+
+To further inspect the dataset we will plot it, use the cell below to make a plot. 
+
+```{python}
+#| teaching: exercise
+#| eval: false
+fig, ax = plt.subplots()
+
+...
+```
+
+```{python}
+#| teaching: solution
+#| fig-align: center
+fig, ax = plt.subplots()
+
+ax.plot(df['L_(uM)'], df['lambda_max_(nm)'], 'o')
+ax.set_xlabel('L (uM)')
+ax.set_ylabel(r'$\lambda_{max}$ (nm)');
+ax.set_xscale('log')
+```
+
+## Transforming the dataset
+
+We will transform the dataset in two ways, the first being converting the ligand concentration to SI base units ($\mu \mathrm{M} \rightarrow \mathrm{M}$), use the cell below to do that by adding a new column to the dataframe
+
+```{python}
+#| teaching: solution
+df['L_(M)'] = df['L_(uM)'] * 10**(-6)
+```
+
+```{python}
+#| teaching: exercise
+#| eval: false
+df['L_(M)'] = ...
+```
+
+Next, as mentioned we want data of $\theta$ vs. $L$, but our measurements are of $\lambda_\mathrm{max}$.
+
+We choose to transform the data according to
+
+$$
+\theta(\lambda_\mathrm{max}) = \frac{\lambda_{\mathrm{max,free}}-\lambda_{\mathrm{max}}}{\lambda_{\mathrm{max,bound}}-\lambda_{\mathrm{max,free}}}
+$$
+
+Where $\lambda_\mathrm{max,free}$ is the peak position measured with no bound ligand and $\lambda_\mathrm{max,bound}$ is peak position when saturated with ligand. Use the cell below to add a new column to the dataframe containing $\theta$.
+
+```{python}
+#| teaching: exercise
+#| eval: false
+df["theta"] = ...
+```
+
+```{python}
+#| teaching: solution
+df["theta"] = (
+    (df['lambda_max_(nm)'].max()-df['lambda_max_(nm)'])
+    / ((df['lambda_max_(nm)'].max()-df['lambda_max_(nm)'].min()))
+    )
+display(df)
+```
+
+```{python}
+#| teaching: solution
+fig, ax = plt.subplots()
+
+ax.plot(df['L_(M)'], df['theta'], 'o')
+ax.set_xlabel('L (M)')
+ax.set_ylabel(r'$\theta$');
+ax.set_xscale('log')
+```
+
+Consider these questions: 
+
+- What assumptions does this transformation imply on the relationship between $\theta$ and $\lambda_\mathrm{max}$? 
+
+::: {.callout-tip title="Hint" collapse="true"}
+You can approximate $\lambda_{\mathrm{max,free}}$ as the maximum peak position. The maximum of a column can be calculated using 
+
+```python
+max_of_col = df['col_name'].max()
+```
+
+Similar logic applies to $\lambda_{\mathrm{max,bound}}$
+:::
+
+## Selecting a model
+
+We need to make a function that defines the model used for fitting, we will start by 
+using the simple-binding model
+
+$$
+\theta = \frac{[L]}{K_D+[L]}
+$$
+
+Use the cell below to define this model, the function must
+
+- Take `L` and `K_D` as inputs - in that order.
+- Return the calculated $\theta$.
+
+```{python}
+#| teaching: solution
+def simple_binding_model(L, K_D):
+    return L / (K_D+L)
+
+# This uses `assert` which will make the cell fail if the statement is not true.
+# It is also fine in this case to just print the calculated and expected value
+assert simple_binding_model(1, 1) == 0.5
+assert simple_binding_model(2, 1) == 2/3
+assert simple_binding_model(0, 1) == 0
+```
+
+```{python}
+#| teaching: exercise
+#| eval: false
+def simple_binding_model(...):
+    ...
+```
+
+Its always a good idea to make sure that a defined function does what it is supposed to do, one way of doing so is to check that it produces the expected result for a few handpicked inputs. 
+
+Use the cell below to check that three sets of inputs lead to the expected results 
+
+```{python}
+#| teaching: exercise
+#| eval: false
+# Select inputs and expected output 
+print(simple_binding_model(..., ...), ...)
+...
+...
+```
+
+## Fitting 
+
+Use the [`curve_fit`](https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.curve_fit.html) function to fit the simple binding model to the dataset.
+
+```{python}
+#| teaching: exercise
+#| eval: false
+popt, _ = ...
+
+K_D = popt[0]
+print(f'K_D = {K_D}')
+```
+
+
+```{python}
+#| teaching: solution
+popt, _ = curve_fit(simple_binding_model, df['L_(M)'], df['theta'])
+
+K_D = popt[0]
+print(f'K_D = {K_D}')
+```
+
+## Analyze the fit
+
+Next we need to analyze the fit, ensuring that the fit has succeeded and evaluating whether the model choice was appropriate. We will do so by 
+
+- Plotting the fit against the dataset.
+- Plotting the residuals of the fit as a function of $[L]$. 
+
+```{python}
+#| teaching: exercise
+#| eval: false
+
+# Make a sequene of points to evaluate the fit
+L_fit = np.geomspace(df['L_(M)'].min(), df['L_(M)'].max(), 50)
+
+# Calculate the fit using the model and the fitted parameters
+theta_fit = ...
+
+# Calculate the residuals
+residual = ...
+
+# Plot the fit along with the data
+fig, axes = plt.subplots(1, 2, figsize=(7, 4), layout='constrained')
+
+# Direct plot: Fit vs data
+ax = axes[0]
+...
+
+# Residual plot
+ax = axes[1]
+...
+```
+
+```{python}
+#| teaching: solution
+
+# Make a sequene of points to evaluate the fit
+L_fit = np.geomspace(df['L_(M)'].min(), df['L_(M)'].max(), 50)
+
+# Calculate the fit using the model and the fitted parameters
+theta_fit = simple_binding_model(L_fit, *popt)
+
+# Plot the fit along with the data
+fig, axes = plt.subplots(1, 2, figsize=(7, 4), layout='constrained')
+
+# Direct plot
+ax = axes[0]
+ax.plot(L_fit, theta_fit)
+ax.plot(df['L_(M)'], df['theta'], 'o')
+ax.set_xscale('log')
+ax.set_xlabel('L (M)')
+ax.set_ylabel(r'$\theta$')
+
+# Residual plot
+ax = axes[1]
+residual = df['theta'] - simple_binding_model(df['L_(M)'], K_D)
+ax.plot(df['L_(M)'], residual, 'o')
+ax.axhline(0, color='gray')
+ax.set_xscale('log')
+ax.set_xlabel('L (M)')
+ax.set_ylabel('Residual');
 ```
