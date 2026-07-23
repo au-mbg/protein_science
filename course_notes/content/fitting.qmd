@@ -29,7 +29,9 @@ We will do so by following a sequence of steps that can be applied to most any p
 5. Fitting 
 6. Analyze the fit
 
-## Loading the dataset
+## Exercise 1
+
+### Loading the dataset
 
 Use the function `pd.read_csv` to load the dataframe into a variable called `df`. 
 
@@ -51,7 +53,7 @@ Consider the following:
 - What are the columns of the dataset? 
 - What are the units of each column? 
 
-## Inspecting the dataset
+### Inspecting the dataset
 
 To further inspect the dataset we will plot it, use the cell below to make a plot. 
 
@@ -74,7 +76,7 @@ ax.set_ylabel(r'$\lambda_{max}$ (nm)');
 ax.set_xscale('log')
 ```
 
-## Transforming the dataset
+### Transforming the dataset
 
 We will transform the dataset in two ways, the first being converting the ligand concentration to SI base units ($\mu \mathrm{M} \rightarrow \mathrm{M}$), use the cell below to do that by adding a new column to the dataframe
 
@@ -138,7 +140,7 @@ max_of_col = df['col_name'].max()
 Similar logic applies to $\lambda_{\mathrm{max,bound}}$
 :::
 
-## Selecting a model
+### Selecting a model
 
 We need to make a function that defines the model used for fitting, we will start by 
 using the simple-binding model
@@ -184,7 +186,7 @@ print(simple_binding_model(..., ...), ...)
 ...
 ```
 
-## Fitting 
+### Fitting 
 
 Use the [`curve_fit`](https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.curve_fit.html) function to fit the simple binding model to the dataset.
 
@@ -206,7 +208,7 @@ K_D = popt[0]
 print(f'K_D = {K_D}')
 ```
 
-## Analyze the fit
+### Analyze the fit
 
 Next we need to analyze the fit, ensuring that the fit has succeeded and evaluating whether the model choice was appropriate. We will do so by 
 
@@ -267,3 +269,129 @@ ax.set_xscale('log')
 ax.set_xlabel('L (M)')
 ax.set_ylabel('Residual');
 ```
+
+## Exercise 2
+
+Repeat the neccessary steps in order to make a fit using the quadratic binding equation
+
+$$
+\begin{aligned}
+\theta &= \frac{K_D + [P_{tot}] + [L]}{2[P_{tot}]} - \sqrt{\left(\frac{K_D + [P_{tot}] + [L]}{2[P_{tot}]}\right)^2 - \frac{[L]}{[P_{tot}]}} \\
+\end{aligned}
+$$
+
+```{python}
+#| teaching: solution
+
+def quadratic_binding_model(L, K_D, Ptot): 
+    t1 = (K_D + Ptot + L) / (2 * Ptot)
+    theta = t1 - np.sqrt(t1**2 - L/Ptot)
+    return theta
+
+assert quadratic_binding_model(1, 1, 1) == 3/2 - np.sqrt((3/2)**2-1)
+assert quadratic_binding_model(1, 2, 1) == 4/2 - np.sqrt((4/2)**2-1)
+assert quadratic_binding_model(2, 1, 1) == 4/2 - np.sqrt((4/2)**2-2)
+```
+
+```{python}
+#| teaching: solution
+popt, _ = curve_fit(quadratic_binding_model, df['L_(M)'], df['theta'])
+
+K_D, Ptot = popt
+print(f'K_D = {K_D}')
+print(f'Ptot = {Ptot}')
+```
+
+```{python}
+#| teaching: solution
+
+# Make a sequene of points to evaluate the fit
+L_fit = np.geomspace(df['L_(M)'].min(), df['L_(M)'].max(), 50)
+
+# Calculate the fit using the model and the fitted parameters
+theta_fit = quadratic_binding_model(L_fit, *popt)
+residual = df['theta'] - quadratic_binding_model(df['L_(M)'], *popt)
+
+# Plot the fit along with the data
+fig, axes = plt.subplots(1, 2, figsize=(7, 4), layout='constrained')
+
+# Direct plot
+ax = axes[0]
+ax.plot(L_fit, theta_fit)
+ax.plot(df['L_(M)'], df['theta'], 'o')
+ax.set_xscale('log')
+ax.set_xlabel('L (M)')
+ax.set_ylabel(r'$\theta$')
+
+# Residual plot
+ax = axes[1]
+ax.plot(df['L_(M)'], residual, 'o')
+ax.axhline(0, color='gray')
+ax.set_xscale('log')
+ax.set_xlabel('L (M)')
+ax.set_ylabel('Residual');
+```
+
+## Exercise 3
+
+Repeat the neccessary steps in order to make a fit using the Hill equation
+
+$$
+\theta = \frac{[L]^n}{K_D^n + [L]^n}
+$$
+
+```{python}
+#| teaching: solution
+
+def hill_binding_model(L, K_D, n): 
+    theta = L**n / (K_D**n + L**n)
+    return theta
+
+assert hill_binding_model(1, 1, 1) == 1/2
+assert hill_binding_model(1, 2, 1) == 1/3
+assert hill_binding_model(2, 1, 1) == 2/3
+```
+
+```{python}
+#| teaching: solution
+popt, _ = curve_fit(
+    hill_binding_model, df['L_(M)'], df['theta'], 
+    bounds=((0, 0), (np.inf, np.inf))
+)
+
+K_D, n = popt
+print(f'K_D = {K_D}')
+print(f'n = {n}')
+```
+
+```{python}
+#| teaching: solution
+
+# Make a sequene of points to evaluate the fit
+L_fit = np.geomspace(df['L_(M)'].min(), df['L_(M)'].max(), 50)
+
+# Calculate the fit using the model and the fitted parameters
+theta_fit = hill_binding_model(L_fit, *popt)
+residual = df['theta'] - hill_binding_model(df['L_(M)'], *popt)
+
+# Plot the fit along with the data
+fig, axes = plt.subplots(1, 2, figsize=(7, 4), layout='constrained')
+
+# Direct plot
+ax = axes[0]
+ax.plot(L_fit, theta_fit)
+ax.plot(df['L_(M)'], df['theta'], 'o')
+ax.set_xscale('log')
+ax.set_xlabel('L (M)')
+ax.set_ylabel(r'$\theta$')
+
+# Residual plot
+ax = axes[1]
+ax.plot(df['L_(M)'], residual, 'o')
+ax.axhline(0, color='gray')
+ax.set_xscale('log')
+ax.set_xlabel('L (M)')
+ax.set_ylabel('Residual');
+```
+
+
