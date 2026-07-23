@@ -199,7 +199,6 @@ K_D = popt[0]
 print(f'K_D = {K_D}')
 ```
 
-
 ```{python}
 #| teaching: solution
 popt, _ = curve_fit(simple_binding_model, df['L_(M)'], df['theta'])
@@ -207,6 +206,44 @@ popt, _ = curve_fit(simple_binding_model, df['L_(M)'], df['theta'])
 K_D = popt[0]
 print(f'K_D = {K_D}')
 ```
+
+::: {.callout-tip title="Hint: `curvefit`" collapse="true"}
+
+The `curve_fit` function uses syntax like 
+
+```python
+popt, pcov = curve_fit(model_function, xdata, ydata)
+```
+Where `popt` contains the fitted parameters and `pcov` contains additional information that could be used to validate the fit but we won't use it now. For example 
+
+```{python}
+# Make some data to fit
+amp = np.random.rand() * 2 # Random amplitude
+exp = np.random.rand() * 5 # Random exponent
+xdata = np.linspace(0, 10, 15) # Uniformly distributed points in [0, 10]
+ydata = amp * xdata**exp
+
+# Define a model
+def model(x, amplitude, exponent):
+    return amplitude*x**exponent
+
+# Make the fit
+popt_example, _ = curve_fit(model, xdata, ydata)
+print(f"Fitted parameters = {popt_example}")
+print(f"Original parameters = {[amp, exp]}")
+
+# Evaluate the fit
+x_fit = np.linspace(0, 10, 50)
+y_fit = model(x_fit, *popt_example)
+
+# Plot the fit with the data
+fig, ax = plt.subplots()
+ax.plot(xdata,  ydata, 'o', label="Data")
+ax.plot(x_fit, y_fit, label="Fit")
+ax.legend()
+```
+
+:::
 
 ### Analyze the fit
 
