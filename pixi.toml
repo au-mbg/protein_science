@@ -6,7 +6,8 @@ platforms = ["osx-arm64", "linux-64", "win-64"]
 version = "0.1.0"
 
 [tasks.render]
-cmd = "quarto render"
+args = [{ "arg" = "mode", default = "exercise", choices = ["exercise", "solution"] }]
+cmd = "quarto render --profile {{mode}}"
 cwd = "course_notes"
 
 [tasks.preview]
