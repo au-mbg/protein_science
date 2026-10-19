@@ -24,22 +24,22 @@ If you want to exit the notebook for any reason, in the terminal window press ``
 
 The two folders contain the same simulation runs, but with different atom selections:
 
-1) Insulin\_w\_solvent: included protein + solvent
+**1) Insulin\_w\_solvent: included protein + solvent**
 	- Insulin is centered in the middle of the simulation box
 
-2) Insulin: only the protein
+**2) Insulin: only the protein**
 
 	- Insulin is centered in the middle of the simulation box, and its rotational and translational motions have been removed
 
 There are two sets of simulations:
 
-1) INS1
+**1) INS1**
 
 	- coordinate file: INS1.pdb
 
 	- trajectory file: INS1.xtc
 
-2) INS2
+**2) INS2**
 
 	- coordinate file: INS2.pdb
 	
