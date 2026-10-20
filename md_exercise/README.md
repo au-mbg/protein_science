@@ -4,9 +4,11 @@ Material for the Molecular Dynamics (MD) simulations exercise in the Protein Sci
 
 # Downloading the git repository to desktop
 
-```git clone https://github.com/au-mbg/protein_science.git ~/Desktop/``` 
+```cd ~/Desktop```
 
-```cd ~/Desktop/protein_science/md_exercise```
+```git clone https://github.com/au-mbg/protein_science.git``` 
+
+```cd protein_science/md_exercise```
 
 # Activating conda environment to run Jupyter Notebook
 
