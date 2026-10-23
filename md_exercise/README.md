@@ -1,8 +1,10 @@
 Material for the Molecular Dynamics (MD) simulations exercise in the Protein Science course.
 
-> Open the ```MD_Protein_Science.ipynb``` and read its contents before the exercise!
+Read and execute steps in this document before proceeding to the exercises.
 
 # Downloading the git repository to desktop
+
+Open a Terminal window by right-clicking on the desktop and selecting "Open Terminal."
 
 ```cd ~/Desktop```
 
@@ -21,6 +23,12 @@ You should see ```(MD)``` pop up at the beginning of your terminal line. This me
 ```jupyter-lab MD_Protein_Science.ipynb```
 
 If you want to exit the notebook for any reason, in the terminal window press ```CTRL+C```. You will be asked if you want it to shut down (answer ```y```).
+
+# Opening PyMOL
+
+Open a new tab in the Terminal by pressing CTRL+SHIFT+t. 
+
+```pymol```
 
 # File structure
 
@@ -47,3 +55,6 @@ There are two sets of simulations:
 	
 	- trajectory file: INS2.pdb
 
+# Ending the exercise
+
+After you are done with the exercise, log out of your account. <span style="color:red">Do NOT turn off the machines!</span>.
