@@ -57,4 +57,4 @@ There are two sets of simulations:
 
 # Ending the exercise
 
-After you are done with the exercise, log out of your account. <span style="color:red">Do NOT turn off the machines!</span>.
+After you are done with the exercises, log out of your account. **Do NOT turn off the machines!**
