@@ -32,19 +32,17 @@ Open a new tab in the Terminal by pressing CTRL+SHIFT+t.
 
 # File structure
 
-The folder **Insulin\_w\_solvent** contains the simulation systems: protein + solvent (water and ions).
-
-	- Insulin is centered in the middle of the simulation box. Its rotational and translational motions have not been removed.
+The folder **Insulin\_solvent** contains the simulation systems: insulin (protein) + solvent (water and ions).
 
 There are two sets of simulations:
 
-1) **INS1**
+1) **INS1_solvent**
 
 	- coordinate file: INS1_solvent.pdb
 
 	- trajectory file: INS1_solvent.xtc
 
-2) **INS2**
+2) **INS2_solvent**
 
 	- coordinate file: INS2_solvent.pdb
 	

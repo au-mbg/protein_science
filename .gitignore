@@ -4,3 +4,6 @@
 
 # Quarto
 course_notes/_site
+
+# Jupyter autosave copies
+.ipynb_checkpoints/
