@@ -1,0 +1,7 @@
+project:
+  output-dir: _site/solutions/
+  resources:
+    - "!_site/"
+
+teaching:
+  show-solutions: true

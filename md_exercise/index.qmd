@@ -1,0 +1,28 @@
+---
+title: "MD simulations exercise"
+---
+
+# Aims
+
+The aim for this exercise is to learn how to look at MD simulations, and how to quantitate some of the dynamic information observed.
+
+Our model protein will be insulin, primarily due to its small size and multiple conformational states that are reachable by short simulations.
+
+We will be investigating the dynamics of insulin hormone via
+
+ 1. visualising the MD simulations (in PyMOL)
+
+ 2. analysing the dynamic properties of insulin in MD simulations (in Python)
+
+## Preparation
+
+- read the README.md file and execute the listed commands
+
+## Practical details
+
+All the material is available on the [AU-MBG Github page](https://github.com/au-mbg/protein_science/). You should first familiarise yourself with the content of the repository (you might find README.md helpful for that purpose).
+
+## The exercise
+
+1. [Visualisation](visualisation.qmd): looking at the simulations in PyMOL, on the course machine.
+2. [Analysis](analysis.qmd): analysing the simulations with Python, directly on the web page.
