@@ -1,0 +1,128 @@
+---
+title: "1) Visualisation"
+format-links: false
+---
+
+## Background
+
+Insulin is a peptide hormone that regulates metabolism by promoting the absorption of glucose from the blood into the cells. Insulin binds to the extracellular portion of the insulin receptor, which then starts multiple signalling cascades that regulate various aspects of the cellular metabolism and promote glucose uptake.
+
+## Visualising the simulation system
+
+In this exercise, we will be working with a whole simulation system: insulin with the solvent (water and ions). The files are in the `Insulin_solvent` folder.
+
+> First, we will observe the whole simulation system. Load `INS1_solvent.pdb` into PyMOL. What are the components of the system? Which ions are included?
+
+```
+load Insulin_solvent/INS1_solvent.pdb
+```
+
+> Marvel at the shape of the simulation box.
+
+Although the term "simulation box" invokes an image of a square or a rectangle, the simulation boxes are in practice often shaped as rhombic dodecahedrons. It is a literal 'corner-cutting' measure, as this box shape is more economic and allows us to simulate fewer solvent molecules.
+
+## Hiding the solvent
+
+To observe insulin, we need to hide the solvent. We **hide** it rather than remove it: `remove` deletes the atoms from the object (to get them back, you would have to load the file again), while `hide` only changes what is displayed.
+
+> Hide the solvent to observe insulin.
+
+First, select all atoms that are not part of the protein (water and ions):
+
+```
+select water_salt, not polymer.protein
+```
+
+The selection `(water_salt)` appears in the panel on the right. Hide it with:
+
+```
+hide everything, water_salt
+```
+
+or in the panel, click **H** next to `(water_salt)` and choose *everything*. To display the solvent again, use `show` (e.g. `show lines, water_salt`).
+
+Note: a selection contains only the atoms that were loaded when it was made. After loading another structure, run both commands again.
+
+## Visualising the insulin structure
+
+Insulin is a small protein ([Uniprot entry](https://www.uniprot.org/uniprotkb/P01308/entry)) consisting of 51 residues divided into two chains (chain A and B). The chains are interconnected by two disulfide bonds, and chain A has an additional intrachain disulfide bond.
+
+> Visualise the structure of insulin in PyMOL. Is insulin a homo- or heterodimer?
+
+> What residues form disulfide bonds?
+
+The secondary structure of insulin is a combination of $\alpha$-helices and random coils, with a small proportion of $\beta$-sheets.
+
+## Insulin conformation(s)
+
+While insulin is relatively rigid in structure, it still visits several different conformations, and the movements are mainly related to the position of the unstructured random coil regions.
+
+Fun fact: Insulin has two conformations which differ in the N-terminus of chain B (residues B1–B8). In the **T-state**, this segment is a random coil, while in the **R-state** it forms an $\alpha$-helix that extends the central helix of chain B. Insulin circulates in the blood and binds to an insulin receptor in the T-state. For storage, insulin assembles into zinc-containing hexamers, which can be made out of T-state monomers, R-state monomers, or a combination.
+
+> Open the second insulin structure (`INS2_solvent.pdb`).
+
+```
+load Insulin_solvent/INS2_solvent.pdb
+```
+
+> Hide the solvent to view the protein (repeat the steps from before).
+
+While the two conformations are similar, they differ mainly in the structure and placement of the termini.
+
+> Align the two structures using only C$\alpha$ atoms on chain A.
+
+::: {.callout-tip title="Hint" collapse="true"}
+The *name* for C$\alpha$ atoms is *CA*. The command has the form `align [mobile selection], [target selection]`.
+:::
+
+> Note the qualitative differences between the two structures.
+
+> Do the two structures correspond to the T-state or the R-state?
+
+## Visualising the MD trajectories
+
+Visualising MD simulations always requires **two** components:
+
+1) **a topology file**: often, a coordinate file with a `.pdb` extension.
+
+2) **a trajectory file**: a large file (in a binary format) that contains the information about the position of each [atom] of each simulation [frame]. In our case, it can be recognised by the `.xtc` extension. The trajectory file does not contain any information about protein topology, atom types, residue types and numbering, or chains -- trajectories are therefore always loaded ONTO the topology (structure) file.
+
+> Load the trajectory `(.xtc)` file with the same name onto the structure file.
+
+```
+load Insulin_solvent/INS1_solvent.xtc
+```
+
+PyMOL understands file extensions (recognises `.xtc` as a trajectory file), and it loads the trajectory onto the structure file with the same name (that is, INS1_solvent). If the files are not named the same, the grouping can be made explicitly by:
+
+```
+load_traj Insulin_solvent/INS1_solvent.xtc, INS1_solvent
+```
+
+> Play the video using the buttons in the lower right corner.
+
+It might seem like insulin is anchored in the centre of the simulation box, but this is not the case. During the simulation, protein can freely diffuse around the simulation box (remember that beyond the boundaries, there are infinite periodic images of the same simulation box). In the postprocessing step, the periodic box is shifted so it always centers on the protein, which is what you are observing here.
+
+> How many frames are there in the simulation?
+
+Note: PyMOL shows the structure from the `.pdb` file as state 1, followed by the trajectory frames, so it counts one state more than there are frames in the trajectory.
+
+> The time step between each frame is 1 ns. How long is the simulation in total?
+
+> Fit the trajectory so it does not rotate or translate. The fit is performed only on the C$\alpha$ atoms. Play the simulation again. How does it look now?
+
+```
+intra_fit INS1_solvent & name CA
+```
+
+> Repeat the same procedure for INS2.
+
+```
+load Insulin_solvent/INS2_solvent.xtc
+```
+
+```
+intra_fit INS2_solvent & name CA
+```
+
+> Note down some observations about the simulations. How are they similar and how do they differ? What parts of insulin are moving the most?

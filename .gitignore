@@ -7,3 +7,6 @@ course_notes/_site
 
 # Jupyter autosave copies
 .ipynb_checkpoints/
+
+# MD exercise website (Quarto)
+md_exercise/_site
