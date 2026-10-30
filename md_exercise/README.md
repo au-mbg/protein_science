@@ -2,12 +2,8 @@
 
 The exercise has two parts:
 
-1) **Visualisation**: you look at the simulations in **PyMOL**. For this, you need the simulation files, which you download in step 2 below.
-2) **Analysis**: you analyse the simulations with Python, **directly on the exercise web page**. Nothing needs to be installed.
-
-The instructions for both parts are on the exercise web page: **https://au-mbg.github.io/protein_science/md_exercise/**
-
-Follow the steps below before you start.
+1) **Visualisation**: you will look at the simulations in **PyMOL**. For this, you will need the simulation files, which you can download in step 2 below.
+2) **Analysis**: you will analyse the simulations with Python, directly on the exercise web page.
 
 # Step 1: Open a terminal
 
@@ -67,7 +63,7 @@ The web page has three parts, listed in the menu on the left:
 
 - **Overview**: the aims of the exercise
 - **1) Visualisation**: the PyMOL part
-- **2) Analysis**: the Python part.
+- **2) Analysis**: the Python part
 
 The Python code runs on the web page itself. Click **Run Code** on each code box, in order from top to bottom. The first time, Python needs up to a minute to load in the browser.
 

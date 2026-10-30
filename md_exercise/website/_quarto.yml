@@ -24,6 +24,8 @@ website:
       - href: analysis.qmd
         text: "2) Analysis"
 
+# analysis.qmd uses format live-html (in-browser Python), which does not inherit these settings:
+# keep the copy in its header in sync
 format:
   html:
     theme:

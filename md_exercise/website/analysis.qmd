@@ -1,6 +1,12 @@
 ---
 title: "2) Analysis"
-format: live-html
+format:
+  live-html:
+    # same as format: html in _quarto.yml
+    theme:
+      light: flatly
+      dark: darkly
+    toc: true
 format-links: false
 pyodide:
   packages:
