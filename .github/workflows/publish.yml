@@ -28,13 +28,12 @@ jobs:
           pixi r render exercise
           pixi r render solution
 
-      # MD exercise: its own small website in md_exercise/, published at <site>/md_exercise/
+      # MD exercise: its own small website in md_exercise/website/, published at <site>/md_exercise/
       - name: Build MD exercise website
-        working-directory: md_exercise
+        working-directory: md_exercise/website
         run: |
-          pixi r quarto render --profile exercise
-          pixi r quarto render --profile solution
-          cp -r _site ../course_notes/_site/md_exercise
+          pixi r quarto render
+          cp -r _site ../../course_notes/_site/md_exercise
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3

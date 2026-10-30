@@ -1,7 +1,5 @@
 # Material for the Molecular Dynamics (MD) simulations exercise in the Protein Science course
 
----
-
 The exercise has two parts:
 
 1) **Visualisation**: you look at the simulations in **PyMOL**. For this, you need the simulation files, which you download in step 2 below.
@@ -84,8 +82,6 @@ In the same terminal (you must still be in the ```md_exercise``` folder; check w
 PyMOL should be started from the ```md_exercise``` folder, because the commands in the exercise (e.g. ```load Insulin_solvent/INS1_solvent.pdb```) load the files from there.
 
 PyMOL commands are typed into the command line of the PyMOL window (the line starting with ```PyMOL>```), not into the terminal.
-
----
 
 # Alternative: the exercise as a Jupyter Notebook
 

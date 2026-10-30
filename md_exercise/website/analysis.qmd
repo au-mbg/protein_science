@@ -132,15 +132,6 @@ print(pdb_2)
 print(t_2)
 ```
 
-::: {teaching="solution"}
-::: {.callout-note title="Solution" collapse="true"}
-```python
-pdb_2 = load_pdb("INS2")
-t_2 = load_trajectory("INS2")
-```
-:::
-:::
-
 # The (over)abundance of data
 
 After running MD simulations, the researcher, in principle, has information about the position of every single particle of a system for every single frame of the simulation. For a regularly-sized system (~100,000 atoms) that was simulated for 1 $\mu$s, and where frames were saved each ns (1000 frames in total), the product is a 3-dimensional matrix [coordinates, atoms, frames] of size (3, 100000, 1000). This matrix contains 300 million values - which, as you can imagine, is hardly interpretable!
@@ -243,17 +234,6 @@ rmsd_1 = rmsd(XXX, reference = XXX, atoms = ca)
 
 rmsd_2 = rmsd()
 ```
-
-::: {teaching="solution"}
-::: {.callout-note title="Solution" collapse="true"}
-The same reference for both trajectories, e.g. the starting structure of INS1:
-
-```python
-rmsd_1 = rmsd(t_1, reference = pdb_1, atoms = ca)
-rmsd_2 = rmsd(t_2, reference = pdb_1, atoms = ca)
-```
-:::
-:::
 
 ```{pyodide}
 # Plot it

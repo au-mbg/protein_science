@@ -1,7 +1,8 @@
-# Website for the MD exercise (separate from the course site in ../course_notes).
-# Build from this folder: pixi r quarto render --profile exercise|solution
+# Website for the MD exercise (separate from the course site in ../../course_notes).
+# Build from this folder: pixi r quarto render  (or: pixi r quarto preview)
 project:
   type: website
+  output-dir: _site/
   # Only these pages; README.md and the notebook are not part of the website
   render:
     - index.qmd
@@ -9,9 +10,6 @@ project:
     - analysis.qmd
   resources:
     - web_data/
-
-filters:
-  - strip-solution
 
 website:
   title: "MD simulations"
@@ -32,6 +30,3 @@ format:
       light: flatly
       dark: darkly
     toc: true
-
-teaching:
-  default-solution-title: "Solution"

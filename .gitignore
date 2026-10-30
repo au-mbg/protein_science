@@ -9,4 +9,4 @@ course_notes/_site
 .ipynb_checkpoints/
 
 # MD exercise website (Quarto)
-md_exercise/_site
+md_exercise/website/_site
