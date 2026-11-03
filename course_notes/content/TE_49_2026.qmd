@@ -1,0 +1,353 @@
+---
+title: Transport kinetics of a glucose/proton symporter measured by two methods
+---
+
+The transport properties of a glucose/proton symporter are analysed by two very different methods:
+
+1.	An uptake assay in Xenopus oocytes using radiolabelled glucose. 
+2.	Solid-supported membrane electrophysiology (SSME) on the purified transporter reconstituted into liposomes.
+
+**Q1** *Briefly outline the two methods. What are the similarities and differences between them, and what are the advantages and disadvantages of each?*
+
+For the next part of the assignment you will have to make multiple plots. Start by importing the packages below that you will use for plotting and calculating
+
+::: {.callout-tip title="Hint" collapse="true"}
+Run the code by pressing shift+enter
+:::
+
+```{python}
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy.optimize import curve_fit
+```
+
+
+The code cell below contains the experimental data. We use pd.DataFrame() to organise and display the data in a structured table rather than as a dictionary. Run the cell to view the data frame.
+
+```{python}
+print('                       pmol/oocyte/30 min')
+Oocyte_df = pd.DataFrame({
+    "Glucose (µM)": [1.25, 2.5, 5, 10, 20, 40],
+    "Oocyte batch 1": [0.213, 0.495,1.321, 3.052, 2.689,3.321],
+    "Oocyte batch 2":[0.279, 0.541, 1.067, 1.342, 3.185, 4.250],
+    "Oocyte batch 3":[0.203, 0.685, 1.745, 1.255, 3.195, 3.561],
+    "Oocyte batch 4": [0.263, 0.789, 2.473, 1.955, 2.057,2.976]
+})
+
+Oocyte_df
+```
+
+**Q2** *Plot the data from Oocyte_df and make a non-linear Michalis-Menten fit and calculate the apparent affinity (K_M) of the transporter.*
+Fill out the scaffold below. It will be specified, where code is missing and you have to write somethin
+
+::: {.callout-tip title="Hint" collapse="true"}
+if you get an error message you do not understand copy/paste the error message to an AI bot.
+:::
+
+In Python, you can access a column in a DataFrame using df['column_name'].
+
+For example, to access a column called name, you would write:
+
+`df['name']`
+
+The first step to make the plot is knowing what your x and y values are. 
+Start by defining your x-values as x_oocyte 
+
+```{python}
+#| teaching: exercise
+#| eval: false
+x_oocyte = 
+```
+To calculate your mean y-value across all four batches using the .mean() function. Be sure to specify axis=1 to compute the mean horizontally across each row (the batches). Leaving the default axis=0 would calculate the vertical mean of each individual column instead.
+
+
+```{python}
+#| teaching: exercise
+#| eval: false
+y_oocyte = Oocyte_df[['...','...','...','...']].mean(axis = 1) # Edit ... to the name of the columns you want to calculate the mean of.
+```
+
+```{python}
+#| teaching: solution
+x_oocyte = Oocyte_df['Glucose (µM)']
+y_oocyte =  Oocyte_df[['Oocyte batch 1', 'Oocyte batch 2','Oocyte batch 3','Oocyte batch 4']].mean(axis=1)
+```
+
+Next, you will create a plot using the matplotlib package, which we imported in the first code cell.
+
+Use the code scaffold below as a starting point to create your plot.
+
+```{python}
+#| teaching: exercise
+#| eval: false
+fig,ax = plt.subplots()
+ax.scatter(x,y, color = "forestgreen") # change to the name of your x and y values - you can also change the color of the graph if you want
+ax.set_ylabel("y-axis title") # change to your own title
+ax.set_xlabel("x-axis title")
+
+```
+
+
+```{python}
+#| teaching: solution
+fig,ax = plt.subplots()
+ax.scatter(x_oocyte,y_oocyte, color = "forestgreen")
+ax.set_ylabel("pmol/oocyte/30 minutes") # change to your own title
+ax.set_xlabel("Glucose µM")
+```
+
+
+Now that you have plotted your data, the next step is to perform a **non-linear curve fit** to find the Michaelis–Menten parameters that best describe your data.
+
+In Python, we can do this using the function `curve_fit()` from the `scipy.optimize` package.
+
+The function takes four main arguments:
+
+`curve_fit(function, x-values, y-values, initial_guess)`
+
+- **Function:** The mathematical function that describes the curve you want to fit. For example, the function \(f(x)=ax+b\) describes a linear relationship.
+- **X-values:** The x values from your data set 
+- **Y-values:** The mean y-value you calculated earlier
+- **Initial guess:** Your initial estimates of the parameters used in the function. For this assignment, you need to estimate \(K_M\) and \(V_{\max}\).
+
+The initial estimates do not need to be exact. They simply give the fitting algorithm a starting point.
+
+You define your estimates as a tuple, for example:
+
+`initial_guess = (10, 3)`
+
+
+*These are example values only. You should choose your own estimates based on your data.*
+
+**Your first task is to define a Python function that describes the Michaelis–Menten equation.** We will then use this function to fit the experimental data.
+
+```{python}
+#| teaching: exercise
+#| eval: false
+def michalis_menten_fit_1(s,km,vmax):
+    return  # define the function you want to fit to your plot
+```
+
+```{python}
+#| teaching: solution
+def michalis_menten_fit_1(s,km,vmax):
+    return (vmax * s) / (km + s)
+```
+
+
+Next, you need to provide initial estimates for the parameters in your function. In this case, you need to estimate (K_M) and (V_{\max}).
+```{python}
+#| teaching: exercise
+#| eval: false
+initial_guess
+```
+
+```{python}
+#| teaching: solution
+initial_guess = (4,10)
+```
+
+You are now ready to use `curve_fit()` with your Michaelis–Menten function, x-values, y-values and initial estimates for \(K_M\) and \(V_{\max}\).
+
+```{python}
+#| teaching: exercise
+#| eval: false
+popt, pcov=curve_fit(...,....,....,...) # use your four parameters instead
+km,vmax=popt  
+print("KM is", km) 
+print("Vmas is", vmax)
+```
+
+```{python}
+#| teaching: solution
+popt, pcov=curve_fit(michalis_menten_fit_1,x_oocyte,y_oocyte,initial_guess)
+km,vmax=popt  
+print("KM is", km) 
+print("Vmas is", vmax)
+```
+
+Next, we want to evaluate how well the fitted curve describes the experimental data. To do this, we first need to calculate the predicted y-values using our fitted parameters.
+
+
+```{python}
+#| teaching: exercise
+#| eval: false
+# calculate y-values for curve
+x_fitted = np.linspace(0,40,200) # this function creates 200 x-values between 0 and 40, in order for us to able to create and even curve. Use this x-value definition for calculations
+y_fitted = # calculate y-values using your definition from earliere, x_fitted and the vmax and km values calculated with curve_fit()
+```
+
+```{python}
+#| teaching: solution
+x_fitted = np.linspace(0,40,200) # this function creates 200 x-values between 0 and 40, in order for us to able to create and even curve. Use this x-value definition for calculations
+y_fitted = michalis_menten_fit_1(x_fitted,km,vmax)
+```
+
+Now you can plot your data together with the curve fit. The fucntion ax.plot() makes a graph whereas the function ax.scatter() makes a scatter plot. To make the plot fill out the scaffold code below.
+
+```{python}
+#| teaching: exercise
+#| eval: false
+fig,ax = plt.subplots()
+ax.scatter(x_dataset, y_dataset color = "forestgreen", label = "Data") #change x and y values to those from your data set
+ax.plot(curve_fit_x,curve_fit_y, color= "lightgreen", label= "Curvefit") # change x and y values to your curvefit graph values
+ax.set_title("Title") # change to your own title
+ax.set_ylabel("y-axis title") # change to your own title
+ax.set_xlabel("x-axis title")# change to your own title
+ax.legend()
+```
+
+```{python}
+#| teaching: solution
+
+fig,ax = plt.subplots()
+ax.scatter(x_oocyte,y_oocyte, color = "forestgreen", label = "Data")
+ax.plot(x_fitted,y_fitted, color= "lightgreen", label= "Curvefit")
+ax.set_title("Michalis menten plot")
+ax.set_ylabel("pmol/oocyte/30min")
+ax.set_xlabel("Glucose µM")
+ax.legend()
+```
+
+Now that we have fitted the curve, we can evaluate how well it describes our experimental data by calculating the coefficient of determination (\(R^2\)) using the equation below.
+
+```{python}
+#| teaching: exercise
+#| eval: false
+y_curvefit = michalis_menten_fit_1(x_data,curvefit_km,curvefit_vmax) # first calculate the estimated y-values from the fit. Change the parameters to your definitions. In this calculation you have to use the original x-values from your dataset and not np.linspace.
+R2_oocyte = 1 - (np.sum((y_data - y_curvefit)**2) / np.sum((y_data - np.mean(y_data))**2)) # change y_curvefit to the name of your fitted y-values and change y_data to the mean y-value from the dataset.
+
+print("R² =", R2_oocyte)
+```
+
+
+```{python}
+#| teaching: solution
+y_curvefit = michalis_menten_fit_1(x_oocyte,km,vmax)
+R2_oocyte = 1 - (np.sum((y_oocyte - y_curvefit)**2) / np.sum((y_oocyte - np.mean(y_curvefit))**2))
+
+print("R² =", R2_oocyte)
+```
+
+**Q2** Plot the data from SSME, make a non-linar Michalis-Menten fit and calculate the apparent affinity (KM) of the transporter.
+
+Use the methode you just used in assignament 1. The first codeblock below shows you your data in a nice dataframe.
+
+```{python}
+print ('                     Current [pA]')
+SSME_df = pd.DataFrame({
+    'Glucose (mM)': [10, 5, 2.5, 1.25, 0.625, 0.3125, 0.156],
+    'Sensor 1': [584.371, 565.668, 503.078, 445.645, 376.28, 269.903, 221.912],
+    'Sensor 2': [603.514, 590.335, 525.131, 468.694, 378.099, 260.735, 202.118],
+    'Sensor 3': [591.037, 594.339, 536.021, 449.076, 346.313, 242.503, 159.760]
+})
+SSME_df
+```
+
+Now, repeat the same analysis for the SSME dataset. The first codeblock below shows you your data in a nice dataframe.
+
+```{python}
+#| teaching: exercise
+#| eval: false
+#Calculate the mean y-value across the three sensor and define your y and x values for the plot.
+
+```
+
+```{python}
+#| teaching: exercise
+#| eval: false
+# plot the data in this code cell
+
+```
+
+```{python}
+#| teaching: solution
+#Answer
+y_ssme = SSME_df[['Sensor 1','Sensor 2','Sensor 3']].mean(axis = 1)
+fig,ax=plt.subplots()
+ax.scatter(SSME_df['Glucose (mM)'],y_ssme)
+ax.set_title("SSME experiment")
+ax.set_ylabel("Current [pA]")
+ax.set_xlabel("Glucose mM")
+ax.legend()
+```
+
+
+```{python}
+#| teaching: exercise
+#| eval: false
+# define a function that matches the function that describes the curve
+
+```
+
+
+```{python}
+#| teaching: solution
+def mich_ment_i0(s,i0,km,imax):
+    return i0+((imax * s) / (km + s))
+```
+
+```{python}
+#| teaching: exercise
+#| eval: false
+# Estimate the parameters for your function in this cell - be aware of the order of your estimates - it has to match the order you typed the parameters in your defined function.
+
+```
+
+```{python}
+#| teaching: solution
+estimates_ssme = 150,0.5,600
+```
+```{python}
+#| teaching: exercise
+#| eval: false
+# Use the curve_fit() function to calculate and print the parameters for your function
+
+```
+
+
+```{python}
+#| teaching: solution
+popt,pcov = curve_fit(mich_ment_i0,SSME_df['Glucose (mM)'],y_ssme,estimates_ssme)
+
+i0, km, imax = popt
+print(i0)
+print(km)
+print(imax)
+```
+
+```{python}
+#| teaching: solution
+# Check that your curvefit is good and draw the curvefitted y-values with the y-values from your plot
+```
+
+```{python}
+#| teaching: solution
+fig,ax = plt.subplots()
+x_fitted_ssme =np.linspace(0,10, 200)
+y_fitted_ssme = mich_ment_i0(x_fitted_ssme,i0,km,imax)
+ax.scatter(SSME_df['Glucose (mM)'],y_ssme, label= "Data", color ="purple")
+ax.plot(x_fitted_ssme, y_fitted_ssme, label = "Curvefit", color = "lavender")
+ax.set_title("SSME experiment")
+ax.set_ylabel("Current [pA]")
+ax.set_xlabel("Glucose mM")
+ax.legend()
+```
+
+```{python}
+#| teaching: exercise
+#| eval: false
+# Calculate r^2 
+```
+
+```{python}
+#| teaching: solution
+y_fitted_ssme = mich_ment_i0(SSME_df['Glucose (mM)'],i0,km,imax)
+
+R2_ssme = 1 - (np.sum((y_ssme - y_fitted_ssme)**2) / np.sum((y_ssme - np.mean(y_ssme))**2))
+
+print("R² =", R2_ssme)
+```
+
+**Q4:** *Discuss the differences between the results. As part of the discussion, define KM, EC₅₀ and Kd and explain how they differ. Finally, discuss the biological implications of the observed differences in transport properties.*
